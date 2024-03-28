@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tester</title>
+    {% load static %}
+  <link rel="stylesheet" href="{% static 'learn.css' %}">  <title>Document</title>
+</head>
+<body>
+    <h1>Tester</h1>
+    <p>{{error}}</p>
+  <form action="{% url 'test' %}" method="post">
+    {% csrf_token %}
+    <table id="tabela">
+      <tbody>
+        {% for i in list %}
+          <tr>
+            {% for j in list %}
+              <td data-name="pole_{{ i }}_{{ j }}">
+              </td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <input type="submit">
+    <input type="hidden" id="val" name="val" value="">
+    <input type="hidden" name="strona" value="">
+  </form>
+  <div class="border1">
+  <form action="{% url 'test' %}" method="post">{% csrf_token %}
+    <div class="ico">
+      <input type="hidden" name="strona" value="test">
+      <button type="submit">Uzupełnianie</button>
+    </div>
+  </form>
+  </div>
+    <script>
+    let isMouseDown = false;
+  const lis = [];
+  document.addEventListener("mousedown", function(event) {
+      if (event.target.tagName === "TD") {
+          isMouseDown = true;
+          const nameAttribute = event.target.getAttribute("data-name");
+          if (nameAttribute!=null){
+            event.target.style.backgroundColor = "black"; 
+            const z = nameAttribute.slice(5);
+            const foundElement = lis.find(element => element === z);
+            if (foundElement==undefined){
+                lis.push(z);
+                const element = document.getElementById("val");
+                element.value = lis;
+            }
+          }
+      }
+  });
+  
+  document.addEventListener("mousemove", function(event) {
+      if (isMouseDown) {
+        const nameAttribute = event.target.getAttribute("data-name");
+          if (nameAttribute!=null){
+            event.target.style.backgroundColor = "black"; 
+            const z = nameAttribute.slice(5);
+            const foundElement = lis.find(element => element === z);
+            if (foundElement==undefined){
+                lis.push(z);
+                const element = document.getElementById("val");
+                element.value = lis;
+            }
+          }
+      }
+  });
+  
+  document.addEventListener("mouseup", function() {
+      isMouseDown = false;
+  });
+    </script>
+</body>
+</html>
